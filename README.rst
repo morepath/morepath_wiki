@@ -4,8 +4,8 @@ Morepath Wiki
 Introduction
 ------------
 
-This is a simple wiki implementation. It's based off the `web
-micro-framework battle presentation`_ by Richard Jones in 2011. In it
+This is a simple wiki implementation. It's based off the
+`web micro-framework battle presentation`_ by Richard Jones in 2011. In it
 he implements a simple wiki in a number of Python web micro-frameworks
 to compare them.
 
@@ -20,7 +20,7 @@ underlying model code for the Morepath wiki. It doesn't factor the
 model in a way most pleasing to Morepath, as there is no ``Page``
 model exposed, so I just made up my own.
 
-.. `web micro-framework battle presentation`: http://www.slideshare.net/r1chardj0n3s/web-microframework-battle
+.. _`web micro-framework battle presentation`: http://www.slideshare.net/r1chardj0n3s/web-microframework-battle
 
 .. _codebase: https://bitbucket.org/r1chardj0n3s/web-micro-battle
 
