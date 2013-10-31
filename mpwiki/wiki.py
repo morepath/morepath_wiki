@@ -30,7 +30,7 @@ def index(request, model):
 def display(request, model):
     return wiki.render_page(model.name)
 
-@app.html(model=Page, name='edit',request_method='GET')
+@app.html(model=Page, name='edit', request_method='GET')
 def edit_form(request, model):
     return wiki.render_edit_form(model.name)
 
