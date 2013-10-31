@@ -4,4 +4,4 @@ parts
 src
 bin
 develop-eggs
-
+contents/*

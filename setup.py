@@ -14,10 +14,11 @@ setup(name='mpwiki',
         'setuptools',
         'morepath',
         'waitress',
+        'html',
         ],
       entry_points= {
         'console_scripts': [
-            'morepath_wiki = wiki:main',
+            'morepath_wiki = mpwiki.wiki:main',
             ]
         },
       )
