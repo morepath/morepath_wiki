@@ -58,7 +58,6 @@ def main():
     config = morepath.Config()
     import mpwiki
     config.scan(mpwiki)
-    config.app(app)
     config.commit()
 
     # serve app as WSGI app
