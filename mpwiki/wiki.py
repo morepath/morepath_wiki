@@ -53,9 +53,8 @@ def revert(request, model):
 
 def main():
     # set up morepath's own configuration
-    morepath.setup()
+    config = morepath.setup()
     # load application specific configuration
-    config = morepath.Config()
     config.scan()
     config.commit()
 
