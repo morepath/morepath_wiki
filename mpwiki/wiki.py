@@ -52,11 +52,7 @@ def revert(request, model):
     return redirect(request.link(model))
 
 def main():
-    # set up morepath's own configuration
-    config = morepath.setup()
-    # load application specific configuration
-    config.scan()
-    config.commit()
+    morepath.autosetup()
 
     # serve app as WSGI app
     waitress.serve(app)
