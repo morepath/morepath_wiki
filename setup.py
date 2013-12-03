@@ -13,7 +13,6 @@ setup(name='mpwiki',
       install_requires=[
         'setuptools',
         'morepath',
-        'waitress',
         'html',
         ],
       entry_points= {

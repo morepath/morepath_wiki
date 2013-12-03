@@ -42,4 +42,4 @@ After this you can start up the wiki using::
 
   $ bin/morepath_wiki
 
-You can access the wiki on http://localhost:8080 after this.
+You can access the wiki on http://localhost:5000 after this.
