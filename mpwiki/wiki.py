@@ -6,7 +6,7 @@ wiki = storage.Storage('contents')
 
 app = morepath.App()
 
-@app.root()
+@app.model(path='')
 class Root(object):
     pass
 
