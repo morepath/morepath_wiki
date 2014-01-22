@@ -21,34 +21,34 @@ def get_page(name):
     return Page(name)
 
 @app.html(model=Root)
-def index(request, model):
+def index(self, request):
     return redirect(request.link(Page('FrontPage')))
 
 with app.html(model=Page) as html:
     @html()
-    def display(request, model):
-        return wiki.render_page(model.name)
+    def display(self, request):
+        return wiki.render_page(self.name)
 
     @html(name='edit')
-    def edit_form(request, model):
-        return wiki.render_edit_form(model.name)
+    def edit_form(self, request):
+        return wiki.render_edit_form(self.name)
 
     @html(name='edit', request_method='POST')
-    def edit(request, model):
+    def edit(self, request):
         if request.form.get('submit'):
-            wiki.store_page(model.name, request.form['content'])
-            return redirect(request.link(model))
+            wiki.store_page(self.name, request.form['content'])
+            return redirect(request.link(self))
 
     @html(name='history')
-    def history(request, model):
-        return wiki.render_history_form(model.name)
+    def history(self, request):
+        return wiki.render_history_form(self.name)
 
     @html(name='history', request_method='POST')
-    def revert(request, model):
+    def revert(self, request):
         version = request.form.get('version')
         if request.form.get('submit') and version:
-            wiki.revert_page(model.name, version)
-            return redirect(request.link(model))
+            wiki.revert_page(self.name, version)
+            return redirect(request.link(self))
 
 def main():
     morepath.autosetup()
