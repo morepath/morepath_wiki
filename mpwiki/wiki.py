@@ -6,7 +6,7 @@ wiki = storage.Storage('contents')
 
 app = morepath.App()
 
-@app.model(path='')
+@app.path(path='')
 class Root(object):
     pass
 
@@ -14,8 +14,7 @@ class Page(object):
     def __init__(self, name):
         self.name = name
 
-@app.model(model=Page, path='{name}',
-           variables=lambda model: {'name': model.name})
+@app.path(model=Page, path='{name}')
 def get_page(name):
     if not storage.wikiname_re.match(name):
         return None
@@ -30,7 +29,7 @@ with app.html(model=Page) as html:
     def display(request, model):
         return wiki.render_page(model.name)
 
-    @html(name='edit', request_method='GET')
+    @html(name='edit')
     def edit_form(request, model):
         return wiki.render_edit_form(model.name)
 
@@ -40,7 +39,7 @@ with app.html(model=Page) as html:
             wiki.store_page(model.name, request.form['content'])
             return redirect(request.link(model))
 
-    @html(name='history', request_method='GET')
+    @html(name='history')
     def history(request, model):
         return wiki.render_history_form(model.name)
 
