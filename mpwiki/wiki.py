@@ -35,8 +35,8 @@ with app.html(model=Page) as html:
 
     @html(name='edit', request_method='POST')
     def edit(self, request):
-        if request.form.get('submit'):
-            wiki.store_page(self.name, request.form['content'])
+        if request.POST.get('submit'):
+            wiki.store_page(self.name, request.POST['content'])
             return redirect(request.link(self))
 
     @html(name='history')
@@ -45,8 +45,8 @@ with app.html(model=Page) as html:
 
     @html(name='history', request_method='POST')
     def revert(self, request):
-        version = request.form.get('version')
-        if request.form.get('submit') and version:
+        version = request.POST.get('version')
+        if request.POST.get('submit') and version:
             wiki.revert_page(self.name, version)
             return redirect(request.link(self))
 
