@@ -4,7 +4,7 @@ import storage
 
 wiki = storage.Storage('contents')
 
-app = morepath.App()
+app = morepath.App(name='Wiki')
 
 @app.path(path='')
 class Root(object):
@@ -52,7 +52,7 @@ with app.html(model=Page) as html:
 
 def main():
     morepath.autosetup()
-    app.run()
+    morepath.run(app)
 
 if __name__ == '__main__':
     main()
