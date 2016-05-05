@@ -26,6 +26,8 @@ with App.html(model=Page) as html:
         if request.POST.get('submit'):
             wiki.store_page(self.name, request.POST['content'])
             return redirect(request.link(self))
+        elif request.POST.get('cancel'):
+            return redirect(request.link(Page('FrontPage')))
 
     @html(name='history')
     def history(self, request):
@@ -37,3 +39,5 @@ with App.html(model=Page) as html:
         if request.POST.get('submit') and version:
             wiki.revert_page(self.name, version)
             return redirect(request.link(self))
+        elif request.POST.get('cancel') or not version:
+            return redirect(request.link(Page('FrontPage')))
