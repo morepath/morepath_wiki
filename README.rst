@@ -27,19 +27,18 @@ model exposed, so I just made up my own.
 Installation
 ------------
 
-Morepath at the time of this writing does not yet have a release. To
-quickly set up the Morepath wiki including Morepath you can run
-buildout. Do the following in a virtualenv::
+You can use pip in a virtual env::
 
   $ cd morepath_wiki
-  $ python bootstrap.py
-  $ bin/buildout
+  $ virtualenv env
+  $ source env/bin/activate
+  $ env/bin/pip install -e .
 
 This will get the Morepath and Reg sources, and other dependencies all
 set up.
 
 After this you can start up the wiki using::
 
-  $ bin/morepath_wiki
+  $ env/bin/morepath_wiki
 
 You can access the wiki on http://localhost:5000 after this.

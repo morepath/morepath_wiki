@@ -1,12 +1,19 @@
 # reusable storage implementation for wiki taken from here
 # https://bitbucket.org/r1chardj0n3s/web-micro-battle/
-import os, re, cgi, stat, time
+import cgi
+import os
+import re
+import stat
+import time
+
 import html
 
 wikiname_re = re.compile('((?<![a-z\d])([A-Z][a-z]+([A-Z][a-z]+|\d+)+))')
 
+
 def wikify(text):
     return wikiname_re.sub(r'<a href="/\1">\1</a>', cgi.escape(text))
+
 
 class Storage(object):
     def __init__(self, directory):
@@ -23,7 +30,8 @@ class Storage(object):
             raise KeyError(title)
         else:
             os.mkdir(os.path.join(self.directory, title))
-            version_file = '' #os.path.join(self.directory, title, 'version-1')
+            # os.path.join(self.directory, title, 'version-1')
+            version_file = ''
             version = '0'
 
         return current_file, version_file, version
@@ -39,12 +47,12 @@ class Storage(object):
 
     def store_page(self, title, content):
         current, version_file, version = self.get_current(title,
-            create=True)
+                                                          create=True)
 
         # new version
         new_version = int(version) + 1
         version_file = os.path.join(self.directory, title,
-            'version-%d' % new_version)
+                                    'version-%d' % new_version)
 
         with open(version_file, 'w') as f:
             f.write(content)
@@ -60,7 +68,7 @@ class Storage(object):
         if version is None:
             current_file, version_file, version = self.get_current(title)
         else:
-            version_file = os.path.join(dir, 'version-%s'%version)
+            version_file = os.path.join(dir, 'version-%s' % version)
             if not os.path.exists(version_file):
                 raise KeyError(version_file)
 
@@ -73,7 +81,7 @@ class Storage(object):
         if not os.path.exists(current_file):
             raise KeyError(title)
 
-        version = os.path.join(self.directory, title, 'version-%s'%version)
+        version = os.path.join(self.directory, title, 'version-%s' % version)
         with open(current_file, 'w') as f:
             f.write(version)
 
@@ -84,13 +92,13 @@ class Storage(object):
 
         # determine the current version
         current_file, version_file, version = self.get_current(title,
-            create=True)
+                                                               create=True)
 
         versions = []
         for i in range(int(version)):
-            path = os.path.join(dir, 'version-%d'%(i+1))
+            path = os.path.join(dir, 'version-%d' % (i + 1))
             mtime = os.stat(path)[stat.ST_MTIME]
-            versions.append((mtime, str(i+1)))
+            versions.append((mtime, str(i + 1)))
         versions.sort()
         return [(v, t) for t, v in versions]
 

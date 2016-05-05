@@ -1,31 +1,18 @@
 from morepath import redirect
-import morepath
+
 import storage
+from .model import Root, Page
+from .app import App
+
 
 wiki = storage.Storage('contents')
 
-class app(morepath.App):
-    pass
 
-@app.path(path='')
-class Root(object):
-    pass
-
-class Page(object):
-    def __init__(self, name):
-        self.name = name
-
-@app.path(model=Page, path='{name}')
-def get_page(name):
-    if not storage.wikiname_re.match(name):
-        return None
-    return Page(name)
-
-@app.html(model=Root)
+@App.html(model=Root)
 def index(self, request):
     return redirect(request.link(Page('FrontPage')))
 
-with app.html(model=Page) as html:
+with App.html(model=Page) as html:
     @html()
     def display(self, request):
         return wiki.render_page(self.name)
@@ -50,10 +37,3 @@ with app.html(model=Page) as html:
         if request.POST.get('submit') and version:
             wiki.revert_page(self.name, version)
             return redirect(request.link(self))
-
-def main():
-    morepath.autosetup()
-    morepath.run(app())
-
-if __name__ == '__main__':
-    main()
