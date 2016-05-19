@@ -1,6 +1,6 @@
 from morepath import redirect
 
-import storage
+from . import storage
 from .model import Root, Page
 from .app import App
 
