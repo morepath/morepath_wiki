@@ -3,7 +3,7 @@
 import io
 from setuptools import setup, find_packages
 
-name = 'mpwiki'
+name = 'morepath_wiki'
 description = (
     'Morepath Wiki inspired by web-micro-battle'
 )
@@ -37,7 +37,7 @@ setup(
     ),
     entry_points={
         'console_scripts': [
-            'morepath_wiki = mpwiki.run:run',
+            'morepath_wiki = morepath_wiki.run:run',
         ]
     },
     classifiers=[
