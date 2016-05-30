@@ -26,7 +26,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'morepath>=0.14',
-        'html',
+        # 'html', This library has been bundled within the source code.
     ],
     extras_require=dict(
         test=[
