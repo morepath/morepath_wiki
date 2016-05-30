@@ -1,4 +1,4 @@
-import storage
+from . import storage
 from .app import App
 from .model import Root, Page
 

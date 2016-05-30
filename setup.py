@@ -3,7 +3,7 @@
 import io
 from setuptools import setup, find_packages
 
-name = 'mpwiki'
+name = 'morepath_wiki'
 description = (
     'Morepath Wiki inspired by web-micro-battle'
 )
@@ -26,7 +26,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'morepath>=0.14',
-        'html',
+        # 'html', This library has been bundled within the source code.
     ],
     extras_require=dict(
         test=[
@@ -37,7 +37,7 @@ setup(
     ),
     entry_points={
         'console_scripts': [
-            'morepath_wiki = mpwiki.run:run',
+            'morepath_wiki = morepath_wiki.run:run',
         ]
     },
     classifiers=[

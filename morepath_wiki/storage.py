@@ -6,7 +6,7 @@ import re
 import stat
 import time
 
-import html
+from . import html
 
 wikiname_re = re.compile('((?<![a-z\d])([A-Z][a-z]+([A-Z][a-z]+|\d+)+))')
 
