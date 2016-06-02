@@ -37,7 +37,7 @@ setup(
     ),
     entry_points={
         'console_scripts': [
-            'morepath_wiki = morepath_wiki.run:run',
+            'morepath_wiki = morepath_wiki.__main__:run',
         ]
     },
     classifiers=[
