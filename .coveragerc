@@ -1,0 +1,3 @@
+[run]
+# The html library is bundled to, but not developed in this project.
+omit = morepath_wiki/html.py
