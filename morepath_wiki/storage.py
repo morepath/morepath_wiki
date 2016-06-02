@@ -108,11 +108,11 @@ class Storage(object):
         except KeyError:
             content = 'Page does not exist: edit to create it.'
         h = html.HTML()
-        h.h1(name)
-        h.pre(wikify(content), escape=False)
-        h.a('edit this page', href='/%s/edit' % name)
+        h.h1(name, id='title')
+        h.pre(wikify(content), escape=False, id='content')
+        h.a('edit this page', href='/%s/edit' % name, id='edit-link')
         h.br
-        h.a('page history', href='/%s/history' % name)
+        h.a('page history', href='/%s/history' % name, id='history-link')
         return str(h)
 
     def render_edit_form(self, name):
@@ -121,7 +121,7 @@ class Storage(object):
         except KeyError:
             content = 'Page does not exist: edit to create it.'
         h = html.HTML()
-        h.h1('Editing ' + name)
+        h.h1('Editing ' + name, id='title')
         f = h.form(action='/%s/edit' % name, method='POST')
         f.textarea(content, rows='10', cols='60', name='content')
         f.br
@@ -131,7 +131,7 @@ class Storage(object):
 
     def render_history_form(self, name):
         h = html.HTML()
-        h.h1('History For ' + name)
+        h.h1('History For ' + name, id='title')
         h.p('Select version to revert to.')
         f = h.form(action='/%s/history' % name, method='POST')
         for version, ts in self.list_page_versions(name):
