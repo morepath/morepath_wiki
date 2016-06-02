@@ -1,5 +1,9 @@
 import morepath
+from . import storage
 
 
 class App(morepath.App):
-    pass
+
+    @morepath.reify
+    def wiki(self):
+        return storage.Storage(self.settings.storage.path)
