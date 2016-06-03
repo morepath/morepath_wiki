@@ -1,11 +1,17 @@
 language: python
 
-cache: pip
+python: 3.5
 env:
+    - TOXENV=py27
+    - TOXENV=py34
+    - TOXENV=py35
     - TOXENV=pep8
 before_install:
     - pip install --upgrade pip setuptools
 install:
     - pip install tox
+    - if [ "$TOXENV" = 'py27' ]; then pip install coveralls; fi
 script:
     - tox -e $TOXENV
+after_success:
+    - if [ "$TOXENV" = 'py27' ]; then coveralls; fi
