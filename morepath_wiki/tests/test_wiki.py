@@ -6,7 +6,11 @@ from webtest import TestApp as Client
 def App(tmpdir_factory):
     """Return the App class configured for testing.
 
-    The storage directory is in a temporary directory.
+    The wiki is stored in a temporary directory, and is shared among the tests.
+    The tests are not isolated, and most depend on the state of the wiki
+    reached by running the previous tests in the sequence they appear in this
+    module.
+
     """
     from .. import App as _App, path, view   # noqa
     tmpdir = tmpdir_factory.mktemp(__name__)
@@ -136,8 +140,6 @@ def test_storage(App):
     app.wiki.revert_page('FrontPage', '2')
     assert app.wiki.retrieve_page('FrontPage') == \
         'This is a much better example'
-
-    # But you cannot revert if the page does not exist
 
 
 def test_default_storage_directory(tmpdir, monkeypatch):
