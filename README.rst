@@ -8,24 +8,23 @@ This is a simple wiki implementation. It's based on the `"Web micro-framework
 battle"`_, a 2011 presentation by Richard Jones. In it he implements a simple
 wiki in a number of Python web micro-frameworks to compare them.
 
-In 2003, Martijn Fraassen figured it would be interesting to see how Morepath
+In 2013, Martijn Fraassen figured it would be interesting to see how Morepath
 stacks up, and also to try building a more real application with Morepath to
 work out the kinks in Morepath itself.
 
 Richard kindly made available the codebase_ for that presentation, which was
-used to create an implementation using Morepath. In particular, ``storage.py``
-is completely taken from Richard's codebase as the underlying model code for
-the Morepath wiki. It doesn't factor the model in a way most pleasing to
-Morepath, as there is no ``Page`` model exposed, so I just made up my own.
+used to create an implementation using Morepath. Apart from a few
+inconsequential changes, ``storage.py`` is completely taken from Richard's
+codebase as the underlying model code for the Morepath wiki.
 
-The `Html library`_, also by Richard, had to bundled due to installation
+The `Html library`_, also by Richard, had to be bundled due to installation
 problems under Python 3.
 
 Getting started
 ---------------
 
-To get started with Morepath right away, you can install and run Morepaht_wiki
-in a freshly created `virtual environment`_::
+To get started with Morepaht_wiki right away, you can install it and run it in
+a newly created `virtual environment`_::
 
   $ virtualenv env
   $ ./env/bin/pip install morepath_wiki
