@@ -23,7 +23,7 @@ problems under Python 3.
 Getting started
 ---------------
 
-To get started with Morepaht_wiki right away, you can install it and run it in
+To get started with Morepath_wiki right away, you can install it and run it in
 a newly created `virtual environment`_::
 
   $ virtualenv env
