@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='morepath_wiki',
-    version='0.1',
+    version='0.2.dev0',
     description=(
         'A wiki demo for Morepath, based on the '
         'web micro-framework battle by Richard Jones'),
