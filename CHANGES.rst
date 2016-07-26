@@ -4,7 +4,7 @@ CHANGES
 0.2 (unreleased)
 ================
 
-- Nothing changed yet.
+- Make Python 3.5 the default testing environment.
 
 
 0.1 (2016-06-09)
