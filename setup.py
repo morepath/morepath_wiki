@@ -30,6 +30,7 @@ setup(
             'pytest',
             'pytest-cov',
             'webtest',
+            'tox',
         ],
     ),
     entry_points={
