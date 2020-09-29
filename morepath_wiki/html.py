@@ -227,7 +227,7 @@ from __future__ import with_statement
 __version__ = '1.16'
 
 import sys
-import cgi
+import html as py_html
 import unittest
 
 
@@ -293,7 +293,7 @@ class HTML(object):
         special to HTML will be escaped.
         '''
         if escape:
-            text = cgi.escape(text)
+            text = py_html.escape(text)
         # adding text
         if self._top:
             self._stack[-1]._content.append(text)
@@ -319,7 +319,7 @@ class HTML(object):
         escape = kw.pop('escape', True)
         if content:
             if escape:
-                self._content = list(map(cgi.escape, content))
+                self._content = list(map(py_html.escape, content))
             else:
                 self._content = content
         if 'newlines' in kw:
@@ -327,9 +327,9 @@ class HTML(object):
             self._newlines = kw.pop('newlines')
         for k in kw:
             if k == 'klass':
-                self._attrs['class'] = cgi.escape(kw[k], True)
+                self._attrs['class'] = py_html.escape(kw[k], True)
             else:
-                self._attrs[k] = cgi.escape(kw[k], True)
+                self._attrs[k] = py_html.escape(kw[k], True)
         return self
 
     def __enter__(self):
