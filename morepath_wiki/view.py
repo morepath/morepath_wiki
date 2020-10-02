@@ -8,6 +8,7 @@ from .app import App
 def index(self, request):
     return redirect(request.link(Page('FrontPage')))
 
+
 with App.html(model=Page) as html:
     @html()
     def display(self, request):

@@ -1,6 +1,6 @@
 # reusable storage implementation for wiki taken from here
 # https://bitbucket.org/r1chardj0n3s/web-micro-battle/
-import cgi
+import html as py_html
 import os
 import re
 import stat
@@ -8,11 +8,11 @@ import time
 
 from . import html
 
-wikiname_re = re.compile('((?<![a-z\d])([A-Z][a-z]+([A-Z][a-z]+|\d+)+))')
+wikiname_re = re.compile(r'((?<![a-z\d])([A-Z][a-z]+([A-Z][a-z]+|\d+)+))')
 
 
 def wikify(text):
-    return wikiname_re.sub(r'<a href="/\1">\1</a>', cgi.escape(text))
+    return wikiname_re.sub(r'<a href="/\1">\1</a>', py_html.escape(text))
 
 
 class Storage(object):
@@ -135,8 +135,8 @@ class Storage(object):
         h.p('Select version to revert to.')
         f = h.form(action='/%s/history' % name, method='POST')
         for version, ts in self.list_page_versions(name):
-            l = f.li(time.asctime(time.localtime(ts)))
-            l.input(type='radio', value=str(version), name='version')
+            li = f.li(time.asctime(time.localtime(ts)))
+            li.input(type='radio', value=str(version), name='version')
         f.br
         f.input(type='submit', name='submit', value='Revert To Selected')
         f.input(type='submit', name='cancel', value='Cancel')
