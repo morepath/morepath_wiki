@@ -26,12 +26,9 @@ setup(
         # 'html', This library has been bundled within the source code.
     ],
     extras_require=dict(
-        test=[
-            'pytest',
-            'pytest-cov',
-            'webtest',
-            'tox',
-        ],
+        test=["pytest >= 2.9.0", "webtest", "pytest-remove-stale-bytecode"],
+        pep8=["flake8", "black"],
+        coverage=["pytest-cov"],
     ),
     entry_points={
         'console_scripts': [
