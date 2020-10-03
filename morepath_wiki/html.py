@@ -3,7 +3,7 @@
 # $Id: html.py 5409 2011-06-29 07:07:25Z rjones $
 # $HeadURL: svn+ssh://svn/svn/trunk/api/eklib/html.py $
 #
-'''Simple, elegant HTML, XHTML and XML generation.
+"""Simple, elegant HTML, XHTML and XML generation.
 
 Constructing your HTML
 ----------------------
@@ -222,9 +222,10 @@ please indicate so at https://www.ohloh.net/p/pyhtml
 This code is copyright 2009-2011 eKit.com Inc (http://www.ekit.com/)
 See the end of the source file for the license of use.
 XHTML support was contributed by Michael Haubenwallner.
-'''
+"""
 from __future__ import with_statement
-__version__ = '1.16'
+
+__version__ = "1.16"
 
 import sys
 import html as py_html
@@ -232,7 +233,7 @@ import unittest
 
 
 class HTML(object):
-    '''Easily generate HTML.
+    """Easily generate HTML.
 
     >>> print HTML('html', 'some text')
     <html>some text</html>
@@ -249,11 +250,11 @@ class HTML(object):
     <p>some text</p>
     <p>some text</p>
 
-    '''
-    newline_default_on = set('table ol ul dl'.split())
+    """
 
-    def __init__(self, name=None, text=None, stack=None, newlines=True,
-            escape=True):
+    newline_default_on = set("table ol ul dl".split())
+
+    def __init__(self, name=None, text=None, stack=None, newlines=True, escape=True):
         self._name = name
         self._content = []
         self._attrs = {}
@@ -271,8 +272,8 @@ class HTML(object):
 
     def __getattr__(self, name):
         # adding a new tag or newline
-        if name == 'newline':
-            e = '\n'
+        if name == "newline":
+            e = "\n"
         else:
             e = self.__class__(name, stack=self._stack)
         if self._top:
@@ -289,9 +290,9 @@ class HTML(object):
         return self
 
     def text(self, text, escape=True):
-        '''Add text to the document. If "escape" is True any characters
+        """Add text to the document. If "escape" is True any characters
         special to HTML will be escaped.
-        '''
+        """
         if escape:
             text = py_html.escape(text)
         # adding text
@@ -301,33 +302,33 @@ class HTML(object):
             self._content.append(text)
 
     def raw_text(self, text):
-        '''Add raw, unescaped text to the document. This is useful for
+        """Add raw, unescaped text to the document. This is useful for
         explicitly adding HTML code or entities.
-        '''
+        """
         return self.text(text, escape=False)
 
     def __call__(self, *content, **kw):
-        if self._name == 'read':
+        if self._name == "read":
             if len(content) == 1 and isinstance(content[0], int):
-                raise TypeError('you appear to be calling read(%d) on '
-                    'a HTML instance' % content)
+                raise TypeError(
+                    "you appear to be calling read(%d) on " "a HTML instance" % content
+                )
             elif len(content) == 0:
-                raise TypeError('you appear to be calling read() on a '
-                    'HTML instance')
+                raise TypeError("you appear to be calling read() on a " "HTML instance")
 
         # customising a tag with content or attributes
-        escape = kw.pop('escape', True)
+        escape = kw.pop("escape", True)
         if content:
             if escape:
                 self._content = list(map(py_html.escape, content))
             else:
                 self._content = content
-        if 'newlines' in kw:
+        if "newlines" in kw:
             # special-case to allow control over newlines
-            self._newlines = kw.pop('newlines')
+            self._newlines = kw.pop("newlines")
         for k in kw:
-            if k == 'klass':
-                self._attrs['class'] = py_html.escape(kw[k], True)
+            if k == "klass":
+                self._attrs["class"] = py_html.escape(kw[k], True)
             else:
                 self._attrs[k] = py_html.escape(kw[k], True)
         return self
@@ -342,19 +343,19 @@ class HTML(object):
         self._stack.pop()
 
     def __repr__(self):
-        return '<HTML %s 0x%x>' % (self._name, id(self))
+        return "<HTML %s 0x%x>" % (self._name, id(self))
 
     def _stringify(self, str_type):
         # turn me and my content into text
-        join = '\n' if self._newlines else ''
+        join = "\n" if self._newlines else ""
         if self._name is None:
             return join.join(map(str_type, self._content))
         a = ['%s="%s"' % i for i in self._attrs.items()]
         l = [self._name] + a
-        s = '<%s>%s' % (' '.join(l), join)
+        s = "<%s>%s" % (" ".join(l), join)
         if self._content:
             s += join.join(map(str_type, self._content))
-            s += join + '</%s>' % self._name
+            s += join + "</%s>" % self._name
         return s
 
     def __str__(self):
@@ -368,136 +369,142 @@ class HTML(object):
 
 
 class XHTML(HTML):
-    '''Easily generate XHTML.
-    '''
-    empty_elements = set('base meta link hr br param img area input col \
-        colgroup basefont isindex frame'.split())
+    """Easily generate XHTML."""
+
+    empty_elements = set(
+        "base meta link hr br param img area input col \
+        colgroup basefont isindex frame".split()
+    )
 
     def _stringify(self, str_type):
         # turn me and my content into text
         # honor empty and non-empty elements
-        join = '\n' if self._newlines else ''
+        join = "\n" if self._newlines else ""
         if self._name is None:
             return join.join(map(str_type, self._content))
         a = ['%s="%s"' % i for i in self._attrs.items()]
         l = [self._name] + a
-        s = '<%s>%s' % (' '.join(l), join)
-        if self._content or not(self._name.lower() in self.empty_elements):
+        s = "<%s>%s" % (" ".join(l), join)
+        if self._content or not (self._name.lower() in self.empty_elements):
             s += join.join(map(str_type, self._content))
-            s += join + '</%s>' % self._name
+            s += join + "</%s>" % self._name
         else:
-            s = '<%s />%s' % (' '.join(l), join)
+            s = "<%s />%s" % (" ".join(l), join)
         return s
 
 
 class XML(XHTML):
-    '''Easily generate XML.
+    """Easily generate XML.
 
     All tags with no contents are reduced to self-terminating tags.
-    '''
-    newline_default_on = set()          # no tags are special
+    """
+
+    newline_default_on = set()  # no tags are special
 
     def _stringify(self, str_type):
         # turn me and my content into text
         # honor empty and non-empty elements
-        join = '\n' if self._newlines else ''
+        join = "\n" if self._newlines else ""
         if self._name is None:
             return join.join(map(str_type, self._content))
         a = ['%s="%s"' % i for i in self._attrs.items()]
         l = [self._name] + a
-        s = '<%s>%s' % (' '.join(l), join)
+        s = "<%s>%s" % (" ".join(l), join)
         if self._content:
             s += join.join(map(str_type, self._content))
-            s += join + '</%s>' % self._name
+            s += join + "</%s>" % self._name
         else:
-            s = '<%s />%s' % (' '.join(l), join)
+            s = "<%s />%s" % (" ".join(l), join)
         return s
 
 
 class TestCase(unittest.TestCase):
     def test_empty_tag(self):
-        'generation of an empty HTML tag'
-        self.assertEquals(str(HTML().br), '<br>')
+        "generation of an empty HTML tag"
+        self.assertEquals(str(HTML().br), "<br>")
 
     def test_empty_tag_xml(self):
-        'generation of an empty XHTML tag'
-        self.assertEquals(str(XHTML().br), '<br />')
+        "generation of an empty XHTML tag"
+        self.assertEquals(str(XHTML().br), "<br />")
 
     def test_tag_add(self):
-        'test top-level tag creation'
-        self.assertEquals(str(HTML('html', 'text')), '<html>\ntext\n</html>')
+        "test top-level tag creation"
+        self.assertEquals(str(HTML("html", "text")), "<html>\ntext\n</html>")
 
     def test_tag_add_no_newline(self):
-        'test top-level tag creation'
-        self.assertEquals(str(HTML('html', 'text', newlines=False)),
-            '<html>text</html>')
+        "test top-level tag creation"
+        self.assertEquals(
+            str(HTML("html", "text", newlines=False)), "<html>text</html>"
+        )
 
     def test_iadd_tag(self):
         "test iadd'ing a tag"
-        h = XML('xml')
-        h += XML('some-tag', 'spam', newlines=False)
-        h += XML('text', 'spam', newlines=False)
-        self.assertEquals(str(h),
-            '<xml>\n<some-tag>spam</some-tag>\n<text>spam</text>\n</xml>')
+        h = XML("xml")
+        h += XML("some-tag", "spam", newlines=False)
+        h += XML("text", "spam", newlines=False)
+        self.assertEquals(
+            str(h), "<xml>\n<some-tag>spam</some-tag>\n<text>spam</text>\n</xml>"
+        )
 
     def test_iadd_text(self):
         "test iadd'ing text"
-        h = HTML('html', newlines=False)
-        h += 'text'
-        h += 'text'
-        self.assertEquals(str(h), '<html>texttext</html>')
+        h = HTML("html", newlines=False)
+        h += "text"
+        h += "text"
+        self.assertEquals(str(h), "<html>texttext</html>")
 
     def test_xhtml_match_tag(self):
-        'check forced generation of matching tag when empty'
-        self.assertEquals(str(XHTML().p), '<p></p>')
+        "check forced generation of matching tag when empty"
+        self.assertEquals(str(XHTML().p), "<p></p>")
 
     if sys.version_info[0] == 2:
+
         def test_empty_tag_unicode(self):
-            'generation of an empty HTML tag'
-            self.assertEquals(unicode(HTML().br), unicode('<br>'))
+            "generation of an empty HTML tag"
+            self.assertEquals(unicode(HTML().br), unicode("<br>"))
 
         def test_empty_tag_xml_unicode(self):
-            'generation of an empty XHTML tag'
-            self.assertEquals(unicode(XHTML().br), unicode('<br />'))
+            "generation of an empty XHTML tag"
+            self.assertEquals(unicode(XHTML().br), unicode("<br />"))
 
         def test_xhtml_match_tag_unicode(self):
-            'check forced generation of matching tag when empty'
-            self.assertEquals(unicode(XHTML().p), unicode('<p></p>'))
+            "check forced generation of matching tag when empty"
+            self.assertEquals(unicode(XHTML().p), unicode("<p></p>"))
 
     def test_just_tag(self):
-        'generate HTML for just one tag'
-        self.assertEquals(str(HTML().br), '<br>')
+        "generate HTML for just one tag"
+        self.assertEquals(str(HTML().br), "<br>")
 
     def test_just_tag_xhtml(self):
-        'generate XHTML for just one tag'
-        self.assertEquals(str(XHTML().br), '<br />')
+        "generate XHTML for just one tag"
+        self.assertEquals(str(XHTML().br), "<br />")
 
     def test_xml(self):
-        'generate XML'
-        self.assertEquals(str(XML().br), '<br />')
-        self.assertEquals(str(XML().p), '<p />')
-        self.assertEquals(str(XML().br('text')), '<br>text</br>')
+        "generate XML"
+        self.assertEquals(str(XML().br), "<br />")
+        self.assertEquals(str(XML().p), "<p />")
+        self.assertEquals(str(XML().br("text")), "<br>text</br>")
 
     def test_para_tag(self):
-        'generation of a tag with contents'
+        "generation of a tag with contents"
         h = HTML()
-        h.p('hello')
-        self.assertEquals(str(h), '<p>hello</p>')
+        h.p("hello")
+        self.assertEquals(str(h), "<p>hello</p>")
 
     def test_escape(self):
-        'escaping of special HTML characters in text'
+        "escaping of special HTML characters in text"
         h = HTML()
-        h.text('<>&')
-        self.assertEquals(str(h), '&lt;&gt;&amp;')
+        h.text("<>&")
+        self.assertEquals(str(h), "&lt;&gt;&amp;")
 
     def test_no_escape(self):
-        'no escaping of special HTML characters in text'
+        "no escaping of special HTML characters in text"
         h = HTML()
-        h.text('<>&', False)
-        self.assertEquals(str(h), '<>&')
+        h.text("<>&", False)
+        self.assertEquals(str(h), "<>&")
 
     def test_escape_attr(self):
-        'escaping of special HTML characters in attributes'
+        "escaping of special HTML characters in attributes"
         h = HTML()
         h.br(id='<>&"')
         self.assertEquals(str(h), '<br id="&lt;&gt;&amp;&quot;">')
@@ -506,91 +513,93 @@ class TestCase(unittest.TestCase):
         'generation of sub-tags using "with" context'
         h = HTML()
         with h.ol:
-            h.li('foo')
-            h.li('bar')
-        self.assertEquals(str(h), '<ol>\n<li>foo</li>\n<li>bar</li>\n</ol>')
+            h.li("foo")
+            h.li("bar")
+        self.assertEquals(str(h), "<ol>\n<li>foo</li>\n<li>bar</li>\n</ol>")
 
     def test_subtag_direct(self):
-        'generation of sub-tags directly on the parent tag'
+        "generation of sub-tags directly on the parent tag"
         h = HTML()
         l = h.ol
-        l.li('foo')
-        l.li.b('bar')
-        self.assertEquals(str(h),
-            '<ol>\n<li>foo</li>\n<li><b>bar</b></li>\n</ol>')
+        l.li("foo")
+        l.li.b("bar")
+        self.assertEquals(str(h), "<ol>\n<li>foo</li>\n<li><b>bar</b></li>\n</ol>")
 
     def test_subtag_direct_context(self):
         'generation of sub-tags directly on the parent tag in "with" context'
         h = HTML()
         with h.ol as l:
-            l.li('foo')
-            l.li.b('bar')
-        self.assertEquals(str(h),
-            '<ol>\n<li>foo</li>\n<li><b>bar</b></li>\n</ol>')
+            l.li("foo")
+            l.li.b("bar")
+        self.assertEquals(str(h), "<ol>\n<li>foo</li>\n<li><b>bar</b></li>\n</ol>")
 
     def test_subtag_no_newlines(self):
-        'prevent generation of newlines against default'
+        "prevent generation of newlines against default"
         h = HTML()
         l = h.ol(newlines=False)
-        l.li('foo')
-        l.li('bar')
-        self.assertEquals(str(h), '<ol><li>foo</li><li>bar</li></ol>')
+        l.li("foo")
+        l.li("bar")
+        self.assertEquals(str(h), "<ol><li>foo</li><li>bar</li></ol>")
 
     def test_add_text(self):
-        'add text to a tag'
+        "add text to a tag"
         h = HTML()
-        p = h.p('hello, world!\n')
-        p.text('more text')
-        self.assertEquals(str(h), '<p>hello, world!\nmore text</p>')
+        p = h.p("hello, world!\n")
+        p.text("more text")
+        self.assertEquals(str(h), "<p>hello, world!\nmore text</p>")
 
     def test_add_text_newlines(self):
-        'add text to a tag with newlines for prettiness'
+        "add text to a tag with newlines for prettiness"
         h = HTML()
-        p = h.p('hello, world!', newlines=True)
-        p.text('more text')
-        self.assertEquals(str(h), '<p>\nhello, world!\nmore text\n</p>')
+        p = h.p("hello, world!", newlines=True)
+        p.text("more text")
+        self.assertEquals(str(h), "<p>\nhello, world!\nmore text\n</p>")
 
     def test_doc_newlines(self):
-        'default document adding newlines between tags'
+        "default document adding newlines between tags"
         h = HTML()
         h.br
         h.br
-        self.assertEquals(str(h), '<br>\n<br>')
+        self.assertEquals(str(h), "<br>\n<br>")
 
     def test_doc_no_newlines(self):
-        'prevent document adding newlines between tags'
+        "prevent document adding newlines between tags"
         h = HTML(newlines=False)
         h.br
         h.br
-        self.assertEquals(str(h), '<br><br>')
+        self.assertEquals(str(h), "<br><br>")
 
     def test_unicode(self):
-        'make sure unicode input works and results in unicode output'
+        "make sure unicode input works and results in unicode output"
         h = HTML(newlines=False)
         # Python 3 compat
         try:
             unicode = unicode
-            TEST = 'euro \xe2\x82\xac'.decode('utf8')
+            TEST = "euro \xe2\x82\xac".decode("utf8")
         except:
             unicode = str
-            TEST = 'euro €'
+            TEST = "euro €"
         h.p(TEST)
-        self.assertEquals(unicode(h), '<p>%s</p>' % TEST)
+        self.assertEquals(unicode(h), "<p>%s</p>" % TEST)
 
     def test_table(self):
         'multiple "with" context blocks'
         h = HTML()
-        with h.table(border='1'):
+        with h.table(border="1"):
             for i in range(2):
                 with h.tr:
-                    h.td('column 1')
-                    h.td('column 2')
-        self.assertEquals(str(h), '''<table border="1">
+                    h.td("column 1")
+                    h.td("column 2")
+        self.assertEquals(
+            str(h),
+            """<table border="1">
 <tr><td>column 1</td><td>column 2</td></tr>
 <tr><td>column 1</td><td>column 2</td></tr>
-</table>''')
+</table>""",
+        )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
 
 
