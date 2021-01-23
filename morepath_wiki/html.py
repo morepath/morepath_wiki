@@ -1,4 +1,3 @@
-# -*- encoding: utf8 -*-
 #
 # $Id: html.py 5409 2011-06-29 07:07:25Z rjones $
 # $HeadURL: svn+ssh://svn/svn/trunk/api/eklib/html.py $
@@ -223,7 +222,6 @@ This code is copyright 2009-2011 eKit.com Inc (http://www.ekit.com/)
 See the end of the source file for the license of use.
 XHTML support was contributed by Michael Haubenwallner.
 """
-from __future__ import with_statement
 
 __version__ = "1.16"
 
@@ -232,7 +230,7 @@ import html as py_html
 import unittest
 
 
-class HTML(object):
+class HTML:
     """Easily generate HTML.
 
     >>> print HTML('html', 'some text')
@@ -254,7 +252,9 @@ class HTML(object):
 
     newline_default_on = set("table ol ul dl".split())
 
-    def __init__(self, name=None, text=None, stack=None, newlines=True, escape=True):
+    def __init__(
+        self, name=None, text=None, stack=None, newlines=True, escape=True
+    ):
         self._name = name
         self._content = []
         self._attrs = {}
@@ -311,10 +311,13 @@ class HTML(object):
         if self._name == "read":
             if len(content) == 1 and isinstance(content[0], int):
                 raise TypeError(
-                    "you appear to be calling read(%d) on " "a HTML instance" % content
+                    "you appear to be calling read(%d) on "
+                    "a HTML instance" % content
                 )
             elif len(content) == 0:
-                raise TypeError("you appear to be calling read() on a " "HTML instance")
+                raise TypeError(
+                    "you appear to be calling read() on a " "HTML instance"
+                )
 
         # customising a tag with content or attributes
         escape = kw.pop("escape", True)
@@ -343,7 +346,7 @@ class HTML(object):
         self._stack.pop()
 
     def __repr__(self):
-        return "<HTML %s 0x%x>" % (self._name, id(self))
+        return "<HTML {} 0x{:x}>".format(self._name, id(self))
 
     def _stringify(self, str_type):
         # turn me and my content into text
@@ -352,7 +355,7 @@ class HTML(object):
             return join.join(map(str_type, self._content))
         a = ['%s="%s"' % i for i in self._attrs.items()]
         l = [self._name] + a
-        s = "<%s>%s" % (" ".join(l), join)
+        s = "<{}>{}".format(" ".join(l), join)
         if self._content:
             s += join.join(map(str_type, self._content))
             s += join + "</%s>" % self._name
@@ -384,12 +387,12 @@ class XHTML(HTML):
             return join.join(map(str_type, self._content))
         a = ['%s="%s"' % i for i in self._attrs.items()]
         l = [self._name] + a
-        s = "<%s>%s" % (" ".join(l), join)
+        s = "<{}>{}".format(" ".join(l), join)
         if self._content or not (self._name.lower() in self.empty_elements):
             s += join.join(map(str_type, self._content))
             s += join + "</%s>" % self._name
         else:
-            s = "<%s />%s" % (" ".join(l), join)
+            s = "<{} />{}".format(" ".join(l), join)
         return s
 
 
@@ -409,12 +412,12 @@ class XML(XHTML):
             return join.join(map(str_type, self._content))
         a = ['%s="%s"' % i for i in self._attrs.items()]
         l = [self._name] + a
-        s = "<%s>%s" % (" ".join(l), join)
+        s = "<{}>{}".format(" ".join(l), join)
         if self._content:
             s += join.join(map(str_type, self._content))
             s += join + "</%s>" % self._name
         else:
-            s = "<%s />%s" % (" ".join(l), join)
+            s = "<{} />{}".format(" ".join(l), join)
         return s
 
 
@@ -443,7 +446,8 @@ class TestCase(unittest.TestCase):
         h += XML("some-tag", "spam", newlines=False)
         h += XML("text", "spam", newlines=False)
         self.assertEquals(
-            str(h), "<xml>\n<some-tag>spam</some-tag>\n<text>spam</text>\n</xml>"
+            str(h),
+            "<xml>\n<some-tag>spam</some-tag>\n<text>spam</text>\n</xml>",
         )
 
     def test_iadd_text(self):
@@ -523,7 +527,9 @@ class TestCase(unittest.TestCase):
         l = h.ol
         l.li("foo")
         l.li.b("bar")
-        self.assertEquals(str(h), "<ol>\n<li>foo</li>\n<li><b>bar</b></li>\n</ol>")
+        self.assertEquals(
+            str(h), "<ol>\n<li>foo</li>\n<li><b>bar</b></li>\n</ol>"
+        )
 
     def test_subtag_direct_context(self):
         'generation of sub-tags directly on the parent tag in "with" context'
@@ -531,7 +537,9 @@ class TestCase(unittest.TestCase):
         with h.ol as l:
             l.li("foo")
             l.li.b("bar")
-        self.assertEquals(str(h), "<ol>\n<li>foo</li>\n<li><b>bar</b></li>\n</ol>")
+        self.assertEquals(
+            str(h), "<ol>\n<li>foo</li>\n<li><b>bar</b></li>\n</ol>"
+        )
 
     def test_subtag_no_newlines(self):
         "prevent generation of newlines against default"

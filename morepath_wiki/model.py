@@ -1,7 +1,7 @@
-class Root(object):
+class Root:
     pass
 
 
-class Page(object):
+class Page:
     def __init__(self, name):
         self.name = name
