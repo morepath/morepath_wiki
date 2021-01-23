@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-import io
 from setuptools import setup, find_packages
 
 
@@ -12,9 +9,9 @@ setup(
         "web micro-framework battle by Richard Jones"
     ),
     long_description=(
-        io.open("README.rst", encoding="utf-8").read()
+        open("README.rst", encoding="utf-8").read()
         + "\n\n"
-        + io.open("CHANGES.rst", encoding="utf-8").read()
+        + open("CHANGES.rst", encoding="utf-8").read()
     ),
     author="Morepath developers",
     author_email="morepath@googlegroups.com",
@@ -30,7 +27,6 @@ setup(
     ],
     extras_require=dict(
         test=["pytest >= 2.9.0", "webtest", "pytest-remove-stale-bytecode"],
-        pep8=["flake8", "black"],
         coverage=["pytest-cov"],
     ),
     entry_points={
@@ -44,5 +40,6 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
 )

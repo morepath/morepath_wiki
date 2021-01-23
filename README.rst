@@ -1,3 +1,18 @@
+.. image:: https://github.com/morepath/morepath_wiki/workflows/CI/badge.svg?branch=master
+   :target: https://github.com/morepath/morepath_wiki/actions?workflow=CI
+   :alt: CI Status
+
+.. image:: https://coveralls.io/repos/github/morepath/morepath_wiki/badge.svg?branch=master
+    :target: https://coveralls.io/github/morepath/morepath_wiki?branch=master
+
+.. image:: https://img.shields.io/pypi/v/morepath_wiki.svg
+  :target: https://pypi.org/project/morepath_wiki/
+
+.. image:: https://img.shields.io/pypi/pyversions/morepath_wiki.svg
+  :target: https://pypi.org/project/morepath_wiki/
+
+
+
 Morepath Wiki
 =============
 
@@ -60,4 +75,4 @@ And to run the test suite::
 
 .. _GitHub: https://github.com/morepath/morepath_wiki
 
-.. _virtual environment: http://www.virtualenv.org/
+.. _virtual environment: https://virtualenv.pypa.io/en/latest/

@@ -15,7 +15,7 @@ def wikify(text):
     return wikiname_re.sub(r'<a href="/\1">\1</a>', py_html.escape(text))
 
 
-class Storage(object):
+class Storage:
     def __init__(self, directory):
         self.directory = directory
 
