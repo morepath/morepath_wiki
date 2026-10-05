@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
 
-
 setup(
     name="morepath_wiki",
     version="0.2.dev0",
